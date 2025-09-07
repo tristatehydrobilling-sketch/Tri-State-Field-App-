@@ -1,0 +1,42 @@
+import re
+
+def station_to_feet(station_str):
+    """
+    Converts a station string (e.g. '12+45.67') to feet (float).
+    """
+    match = re.match(r"(\d+)\+(\d+(?:\.\d+)?)", station_str)
+    if not match:
+        raise ValueError("Invalid station format. Use A+BB.cc, e.g., 12+45.67")
+    left, right = match.groups()
+    return int(left) * 100 + float(right)
+
+def feet_to_station(feet):
+    """
+    Converts feet (float) to station string (e.g. '12+45.67').
+    """
+    left = int(feet // 100)
+    right = feet % 100
+    return f"{left}+{right:05.2f}"
+
+def distance_between_stations(station1, station2):
+    """
+    Returns the distance in feet between two station strings.
+    """
+    feet1 = station_to_feet(station1)
+    feet2 = station_to_feet(station2)
+    return abs(feet2 - feet1)
+
+# Example usage:
+if __name__ == "__main__":
+    # Convert station to feet
+    s = "12+45.67"
+    print(f"{s} = {station_to_feet(s)} ft")
+    
+    # Convert feet to station
+    f = 1245.67
+    print(f"{f} ft = {feet_to_station(f)}")
+    
+    # Distance between stations
+    s1 = "18+75"
+    s2 = "12+20"
+    print(f"Distance between {s1} and {s2} = {distance_between_stations(s1, s2)} ft")
